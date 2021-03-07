@@ -1,12 +1,11 @@
 import React from 'react'
-import { useState } from 'react';
 
 function ShowTime( {_time} ) {
     const showTimeString = (time) => {
-        var stime = Number(time);
+        let stime = Number(time);
         if (stime&&stime>0) {
-            var min = Math.floor(stime / 60);
-            var sec = stime % 60;
+            let min = Math.floor(stime / 60);
+            let sec = stime % 60;
             if (min < 10) min = '0' + min;
             if (sec < 10) sec = '0' + sec;
             return min + ':' + sec;

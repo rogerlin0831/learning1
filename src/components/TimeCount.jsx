@@ -2,7 +2,7 @@ import React from 'react'
 import ShowTime from '../components/ShowTime'
 import { useState, useEffect } from 'react';
 
-const TimeCount = ( {_onTime, _newround} ) => {
+const TimeCount = ( {onTime, newRound} ) => {
 
     const timelimit = 90;
 
@@ -14,33 +14,35 @@ const TimeCount = ( {_onTime, _newround} ) => {
     }
 
     const pushButton = () => {
+        if( showtime > 0 ) {
+            alert('is Running');
+            return;
+        }
         let t = Number(inputNum);
-        if( t <= timelimit && t > 0 ) {
-            // startCountDown(t);
-            setshowTime(t);
-            _newround();
-            setTimeout(TimeCountDown, 1000);
+        if( t <= timelimit && t > 0 ) {            
+            if( newRound() ) {
+                setshowTime(t);
+            } else {
+                alert('nobody');
+            }
         } else {
             alert('time error (time need < 90s & > 0)')
         }
     }
 
     const TimeCountDown = () => {        
-        var ct = showtime - 1;
+        let ct = showtime - 1;
         setshowTime(ct);
+        if( ct === 0 ) {
+            onTime();
+        }
     }
 
-    const startCountDown = ( _starttime ) => {
-        setshowTime(_starttime);        
-        setTimeout(TimeCountDown, 1000);
-    }
-
-    useEffect( ()=> {
-        console.log('[useEffect] ',showtime)
+    useEffect( ()=> {        
         if( showtime > 0 ) {
-            setTimeout(TimeCountDown, 1000);
-        } else {            
-            _onTime();
+            setTimeout(TimeCountDown, 1000);            
+        } else {
+            
         }
     }, [showtime] )
         
@@ -61,7 +63,7 @@ const TimeCount = ( {_onTime, _newround} ) => {
             <ShowTime _time={showtime}></ShowTime>
         </div>
         
-        </>       
+        </>
     )
 }
 

@@ -1,8 +1,11 @@
 import Header from '../components/Header'
 import TimeCount from '../components/TimeCount'
-import RList from '../components/RList';
-import { useState, useEffect } from 'react';
+import RList from '../components/RList'
+import About from '../components/About'
+import Footer from "../components/Footer";
 
+import { useState } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 function App() {
 
@@ -33,7 +36,7 @@ function App() {
    * 確認某個倒楣鬼.
    */
   const shootRandom = () => {
-    var who = getwinid();
+    let who = getwinid();
     console.log('who is', who);
 
     setpersonList(personList.map(person=>( person.id === who ? { ...person, isWin: true } : person )));
@@ -42,22 +45,47 @@ function App() {
   /**
    * 開新局.
    */
-  const newround = () => {
+  const newRound = () => {
     setpersonList(personList.map(person=> ( {...person,isWin : false} ) 
     ) );
+    console.log(personList.length > 0 );
+    return ( personList.length > 0 );
   }
 
   const getwinid = () => {
-    var win_index = Math.floor(Math.random() * Math.floor(personList.length));
+    let win_index = Math.floor(Math.random() * Math.floor(personList.length));
     return personList[win_index].id;
   }
 
   return (
-    <div>
-      <Header />
-      <TimeCount _onTime={shootRandom} _newround={newround}></TimeCount>
-      <RList _personList={personList}/>
-    </div>
+    <BrowserRouter>
+      <div>
+        <Header />
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <>
+              <TimeCount onTime={shootRandom} newRound={newRound}></TimeCount>
+              <RList personList={personList}/>
+            </>
+          )
+        }
+        />
+        <Route path="/about" component={About} />
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <>
+              <Footer></Footer>
+            </>
+          )
+        }
+        />
+        
+      </div>
+    </BrowserRouter>
   );
 }
 

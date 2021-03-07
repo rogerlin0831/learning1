@@ -2,15 +2,13 @@ import React from 'react'
 import Person from "../components/Person";
 import PropTypes from 'prop-types';
 
-const RList = ({_personList}) => {
-
-    console.log(_personList);
+const RList = ({personList}) => {
 
     return (
         <div className ="RList">
             List:
-            { _personList.length > 0 ?
-                _personList.map(person=>
+            { personList.length > 0 ?
+                personList.map(person=>
                     <Person key={person.id} _data={person} ></Person>
                     )
                 :
@@ -21,11 +19,11 @@ const RList = ({_personList}) => {
 }
 
 RList.defaultProps = {
-    _personList: [],
+    personList: [],
 }
 
 RList.propTypes = {
-    _personList: PropTypes.array,
+    personList: PropTypes.array,
 }
 
 export default RList
