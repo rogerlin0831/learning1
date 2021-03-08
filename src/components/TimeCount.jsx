@@ -30,7 +30,7 @@ const TimeCount = ( {onTime, newRound} ) => {
         }
     }
 
-    const TimeCountDown = () => {        
+    const TimeCountDown = () => {
         let ct = showtime - 1;
         setshowTime(ct);
         if( ct === 0 ) {

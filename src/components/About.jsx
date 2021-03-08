@@ -8,6 +8,12 @@ const About = () => {
           <h6>2021.3.7</h6>
           
           <Link to="/">Go Back</Link>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />          
         </div>
       );
 }

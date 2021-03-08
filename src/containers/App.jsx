@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 function App() {
 
+  const [editEnable, setEditEnable] = useState(false)
   const [personList, setpersonList] = useState([
     {
       id : 1,
@@ -32,6 +33,7 @@ function App() {
     },
   ]);
 
+  // about timeCount.
   /**
    * 確認某個倒楣鬼.
    */
@@ -41,20 +43,43 @@ function App() {
 
     setpersonList(personList.map(person=>( person.id === who ? { ...person, isWin: true } : person )));
   }
-
   /**
    * 開新局.
    */
   const newRound = () => {
     setpersonList(personList.map(person=> ( {...person,isWin : false} ) 
-    ) );
-    console.log(personList.length > 0 );
+    ) );    
     return ( personList.length > 0 );
   }
-
+  /**
+   * 取得隨機數.
+   */
   const getwinid = () => {
     let win_index = Math.floor(Math.random() * Math.floor(personList.length));
     return personList[win_index].id;
+  }
+
+  //
+  const editCallback = () => {
+    setEditEnable(!editEnable);
+    newRound();
+  }
+
+  // about personList.
+  /**
+   * add person
+   */
+  const addPerson = (name) => {
+    const id = Math.floor(Math.random() * 100000) + 1;
+    const iswin = false;
+    const newPerson = { id, name, iswin }
+    setpersonList([...personList, newPerson])
+  }
+  /**
+   * delete person
+   */
+  const deletePerson = (id) => {
+    setpersonList(personList.filter(personList => personList.id !== id));
   }
 
   return (
@@ -66,24 +91,15 @@ function App() {
           exact
           render={props => (
             <>
-              <TimeCount onTime={shootRandom} newRound={newRound}></TimeCount>
-              <RList personList={personList}/>
+              { !editEnable && <TimeCount onTime={shootRandom} newRound={newRound}></TimeCount>  }
+                            
+              <RList personList={personList} addPerson={addPerson} deletePerson={deletePerson} editEnable={editEnable} editCallback={editCallback}/>              
             </>
           )
         }
         />
         <Route path="/about" component={About} />
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <>
-              <Footer></Footer>
-            </>
-          )
-        }
-        />
-        
+        <Footer></Footer>
       </div>
     </BrowserRouter>
   );
